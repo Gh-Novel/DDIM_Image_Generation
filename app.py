@@ -164,11 +164,7 @@ def build_ui():
     s = STATE
     max_steps = min(s.cfg.timesteps, 100)   # cap at 100 for CPU
 
-    with gr.Blocks(
-        title="DDIM Face Generation",
-        theme=gr.themes.Soft(),
-        css=".output-image img { image-rendering: pixelated; }"
-    ) as demo:
+    with gr.Blocks(title="DDIM Face Generation") as demo:
 
         gr.Markdown("""
 # 🧠 DDIM Face Generation
