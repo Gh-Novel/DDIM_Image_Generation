@@ -27,7 +27,7 @@
 
 <div align="center">
 
-**[▶ Try it on Hugging Face Spaces](https://huggingface.co/spaces/NoobNovel/DDIM_Image_Generation)**
+**[▶ Try it on Hugging Face Spaces](https://huggingface.co/spaces/novelkathor/DDIM_Image_Generation)**
 
 <img width="900" alt="Gradio demo UI" src="https://github.com/user-attachments/assets/1caff3cd-37e4-4adf-b3fb-75f9a715db77" />
 
