@@ -5,6 +5,7 @@
 <div align="center">
 
 [![HuggingFace Space](https://img.shields.io/badge/🤗%20HuggingFace-Live%20Demo-blue)](https://huggingface.co/spaces/NoobNovel/DDIM_Image_Generation)
+[![CI](https://github.com/Gh-Novel/DDIM_Image_Generation/actions/workflows/ci.yml/badge.svg)](https://github.com/Gh-Novel/DDIM_Image_Generation/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)](https://python.org)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.3-orange?logo=pytorch)](https://pytorch.org)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
@@ -56,6 +57,29 @@
 
 ---
 
+## 📊 Evaluation — FID
+
+Frechet Inception Distance against the CelebA-HQ training distribution
+(5,000 real images, 2,048 generated samples per row, EMA weights, deterministic
+DDIM with η = 0). Computed with `eval.py` — torchmetrics Inception-V3, 2048-d
+features. Timings are per image on Apple Silicon MPS, batch 64.
+
+| Sampler | FID ↓ | Time/image |
+|---|---|---|
+| DDIM-10 | 58.66 | 212 ms |
+| DDIM-20 | 37.40 | 273 ms |
+| DDIM-50 | 22.63 | 901 ms |
+
+The speed/quality tradeoff in one table: 50 DDIM steps reach FID 22.6 — a
+**20× reduction in sampling steps** vs DDPM-1000 — while 20 steps still produce
+recognizable faces 3× faster. Reproduce with:
+
+```bash
+python eval.py --ckpt checkpoints/stage-64_best.pt --steps 10 20 50
+```
+
+---
+
 ## 🏗️ Architecture
 
 ```
@@ -90,8 +114,10 @@ minidiffusion/
 ├── utils/
 │   ├── dataset.py       # CelebA-HQ dataloader
 │   └── visualize.py     # Trajectory GIF, interpolation grid
+├── tests/               # pytest suite (run in CI on every push)
 ├── train.py             # Training loop — W&B logging, auto-resume
 ├── sample.py            # Inference — grid, trajectory, interpolation, compare
+├── eval.py              # FID evaluation (torchmetrics Inception-V3)
 ├── app.py               # Gradio demo UI
 └── config.py            # All hyperparameters
 ```
@@ -126,4 +152,11 @@ python sample.py --ckpt checkpoints/stage-64_best.pt --num 16 --steps 50
 
 # Train from scratch on your own data
 python train.py --image-size 64 --epochs 100 --run-name my-run
+
+# Run the test suite
+pip install -r requirements-dev.txt
+pytest tests/ -q
+
+# Compute FID at several DDIM step counts
+python eval.py --ckpt checkpoints/stage-64_best.pt --steps 10 20 50
 ```

@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 *.pyo
 .Python
+.pytest_cache/
 
 # Training artifacts
 wandb/

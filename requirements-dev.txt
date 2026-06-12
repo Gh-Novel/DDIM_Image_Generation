@@ -1,0 +1,5 @@
+# Test + evaluation extras (not needed by the HF Space demo)
+-r requirements.txt
+pytest>=8.0
+torchmetrics>=1.4
+torch-fidelity>=0.3
